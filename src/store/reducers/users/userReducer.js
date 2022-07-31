@@ -4,18 +4,21 @@ import { APIGetProfile } from "../../../API/users";
 
 export const fetchProfile = createAsyncThunk(
   "users/fetchProfile",
-  async function() {
+  async function () {
     const response = await APIGetProfile();
     return response.data;
   }
 );
 
-export const fetchLogin = createAsyncThunk("users/fetchLogin", async function(
-  payload
-) {
-  const response = await APILogin(payload);
-  return response.data;
-});
+export const fetchLogin = createAsyncThunk(
+  "users/fetchLogin",
+  async function (payload) {
+    const response = await APILogin(payload);
+    await console.log(response);
+    localStorage.setItem("token", response.token);
+    return response;
+  }
+);
 
 const userSlice = createSlice({
   name: "users",
@@ -49,12 +52,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  getProfile,
-  getOneUser,
-  getAllUsers,
-  updateUser,
-  deleteUser,
-} = userSlice.actions;
+export const { getProfile, getOneUser, getAllUsers, updateUser, deleteUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
