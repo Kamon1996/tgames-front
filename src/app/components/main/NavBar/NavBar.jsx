@@ -20,18 +20,25 @@ import {
 } from "@tabler/icons";
 
 import { Link, useLocation } from "react-router-dom";
+import { Icons } from "../../../../assets/icons";
 
 const mockdata = [
-  { icon: <IconGauge />, label: "Dashboard", to: "/" },
-  { icon: <IconMessage2/>, label: "Messenger", to: "/messenger" },
-  { icon: <IconCalendarStats/>, label: "Games", to: "/games" },
-  { icon: <IconSettings/>, label: "Settings", to: "/settings" },
+  { icon: <Icons.Home />, label: "Dashboard", to: "/" },
+  { icon: <IconMessage2 />, label: "Messenger", to: "/messenger" },
+  { icon: <IconCalendarStats />, label: "Games", to: "/games" },
+  { icon: <IconSettings />, label: "Settings", to: "/settings" },
 ];
 
 export function NavbarMinimal() {
+  console.log(<Icons.Home />);
   const location = useLocation();
   const links = mockdata.map((link) => (
-    <Tooltip key={link.label} label={link.label} position="right" transitionDuration={0}>
+    <Tooltip
+      key={link.label}
+      label={link.label}
+      position="right"
+      transitionDuration={0}
+    >
       <NavLink
         icon={link.icon}
         component={Link}

@@ -16,11 +16,11 @@ export async function APIShowUser(username) {
   return response.data;
 }
 
-export async function APIDeleteUser(username) {
-  const response = await API.delete(`/users/${username}`);
+export async function APIDeleteUser(id) {
+  const response = await API.delete(`/users/${id}`);
   return response.data;
 }
-export async function APIUpdateUser(payload) {
-  const response = await API.put(`/users/${payload.username}`, payload.data);
+export async function APIUpdateUser({ id, data }) {
+  const response = await API.put(`/users/${id}`, data);
   return response.data;
 }

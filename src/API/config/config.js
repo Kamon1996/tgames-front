@@ -5,6 +5,5 @@ export const API = axios.create({
 });
 
 if (localStorage.getItem("token")) {
-  console.log(localStorage.getItem("token"));
   API.defaults.headers.common["Authorization"] = localStorage.getItem("token");
 }
