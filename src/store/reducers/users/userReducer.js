@@ -14,7 +14,6 @@ export const fetchLogin = createAsyncThunk(
   "users/fetchLogin",
   async function (payload) {
     const response = await APILogin(payload);
-    await console.log(response);
     localStorage.setItem("token", response.token);
     return response;
   }
@@ -24,7 +23,7 @@ const userSlice = createSlice({
   name: "users",
   initialState: {
     profile: {},
-    users: [],
+    usersList: [],
     current_user: {},
     status: null,
     errors: null,
