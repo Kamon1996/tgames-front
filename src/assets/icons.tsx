@@ -1,6 +1,6 @@
 import React from "react";
 
-const Home = (fill) => (
+const Home = (fill: string) => (
   <svg
     fill={fill}
     width="24"
@@ -12,7 +12,7 @@ const Home = (fill) => (
   </svg>
 );
 
-const Profile = (fill) => (
+const Profile = (fill: string) => (
   <svg
     fill={fill}
     width="24"
@@ -39,7 +39,7 @@ const Profile = (fill) => (
   </svg>
 );
 
-const Messanger = (fill) => (
+const Messanger = (fill: string) => (
   <svg
     width="24"
     height="24"
@@ -52,7 +52,7 @@ const Messanger = (fill) => (
   </svg>
 );
 
-const Settings = (fill) => (
+const Settings = (fill: string) => (
   <svg
     width="24"
     height="24"
@@ -64,7 +64,7 @@ const Settings = (fill) => (
   </svg>
 );
 
-const Moon = (fill) => (
+const Moon = (fill: string) => (
   <svg
     width="24"
     height="24"
@@ -76,7 +76,7 @@ const Moon = (fill) => (
   </svg>
 );
 
-const Controller = (fill) => (
+const Controller = (fill: string) => (
   <svg
     width="24"
     height="24"

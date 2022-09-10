@@ -10,16 +10,20 @@ import {
   Button,
   LoadingOverlay,
 } from "@mantine/core";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin } from "../../../store/reducers/profile/profileReducer";
 import { useForm, zodResolver } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { flashError, flashSuccess } from "../Common/Notification/flashs";
+import { useAppDispatch, useAppSelector } from "store";
 
-export function LoginForm({ closePopover }) {
-  const profile = useSelector((store) => store.profile);
+interface IProps {
+  closePopover: () => void;
+}
 
-  const dispatch = useDispatch();
+export function LoginForm({ closePopover }: IProps) {
+  const profile = useAppSelector((store) => store.profile);
+
+  const dispatch = useAppDispatch();
   const [type, toggle] = useToggle(["login", "register"]);
 
   const schema = z.object({
@@ -41,7 +45,7 @@ export function LoginForm({ closePopover }) {
     },
   });
 
-  const handleSubmit = async (payload) => {
+  const handleSubmit = async (payload: LoginData) => {
     try {
       const resultAction = await dispatch(fetchLogin(payload)).unwrap();
       if (!resultAction) throw new Error();
@@ -92,7 +96,9 @@ export function LoginForm({ closePopover }) {
           <Group position="apart" mt="md">
             <Checkbox label="Remember me" />
             <Anchor
-              onClick={(event) => event.preventDefault()}
+              onClick={(event: React.MouseEvent<HTMLElement>) =>
+                event.preventDefault()
+              }
               href="#"
               size="sm"
             >

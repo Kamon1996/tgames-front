@@ -1,11 +1,11 @@
 import { Button, Grid, createStyles, Popover, Center } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store";
 import { LoginForm } from "../../LoginWindow/form";
 
 export function HeaderMain() {
-  const profile = useSelector((store) => store.profile);
+  const profile = useAppSelector((store) => store.profile);
   const [popoverOpened, setPopoverOpened] = useState(false);
   const ref = useClickOutside(() => setPopoverOpened(false));
 

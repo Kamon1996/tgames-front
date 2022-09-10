@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { MantineProvider, LoadingOverlay } from "@mantine/core";
 import { Layout } from "./components/main/Layout/Layout";
 import { Routes, Route } from "react-router-dom";
 import Messenger from "./Pages/Messenger/Messenger";
 import { fetchProfile } from "../store/reducers/profile/profileReducer";
 import { NotificationsProvider } from "@mantine/notifications";
-import { myTheme } from "../assets/styles/MantineTheme.ts";
+import { myTheme } from "../assets/styles/MantineTheme";
+import { useAppDispatch } from "store";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchProfile());
-  }, []);
+  }, [dispatch]);
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={myTheme}>
