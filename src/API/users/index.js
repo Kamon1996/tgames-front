@@ -2,7 +2,6 @@ import { API } from "../config/config";
 
 export async function APIGetProfile() {
   const response = await API.get("/profile");
-  console.log(response);
   return response;
 }
 

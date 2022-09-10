@@ -1,28 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { APILogin } from "../../../API/auth";
-import { APIGetProfile } from "../../../API/users";
 
-export const fetchProfile = createAsyncThunk(
-  "users/fetchProfile",
-  async function () {
-    const response = await APIGetProfile();
-    return response.data;
-  }
-);
-
-export const fetchLogin = createAsyncThunk(
-  "users/fetchLogin",
-  async function (payload) {
-    const response = await APILogin(payload);
-    localStorage.setItem("token", response.token);
-    return response;
-  }
-);
+const profileInitState = {
+  email: "",
+  full_name: "",
+  status: null,
+  errors: null,
+};
 
 const userSlice = createSlice({
   name: "users",
   initialState: {
-    profile: {},
+    profile: profileInitState,
     usersList: [],
     current_user: {},
     status: null,
@@ -35,20 +23,7 @@ const userSlice = createSlice({
     updateUser() {},
     deleteUser() {},
   },
-  extraReducers: {
-    [fetchProfile.pending]: (state, action) => {
-      state.status = "loading";
-      state.errors = null;
-    },
-    [fetchProfile.fulfilled]: (state, action) => {
-      state.status = "resolved";
-      state.profile = action.payload;
-    },
-    [fetchProfile.rejected]: (state, action) => {
-      state.status = "loading";
-      state.errors = null;
-    },
-  },
+  extraReducers: {},
 });
 
 export const { getProfile, getOneUser, getAllUsers, updateUser, deleteUser } =

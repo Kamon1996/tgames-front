@@ -6,89 +6,117 @@ import {
   Checkbox,
   Anchor,
   Paper,
-  Title,
-  Text,
-  Container,
   Group,
   Button,
-  NumberInput,
+  LoadingOverlay,
 } from "@mantine/core";
-import { useDispatch } from "react-redux";
-import { fetchLogin } from "../../../store/reducers/users/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLogin } from "../../../store/reducers/profile/profileReducer";
 import { useForm, zodResolver } from "@mantine/form";
+import { useToggle } from "@mantine/hooks";
+import { flashError, flashSuccess } from "../Common/Notification/flashs";
 
-export function LoginForm() {
+export function LoginForm({ closePopover }) {
+  const profile = useSelector((store) => store.profile);
+
   const dispatch = useDispatch();
+  const [type, toggle] = useToggle(["login", "register"]);
 
   const schema = z.object({
-    name: z.string().min(2, { message: "Name should have at least 2 letters" }),
-    sername: z
-      .string()
-      .min(2, { message: "Sername should have at least 2 letters" }),
     email: z.string().email({ message: "Invalid email" }),
+    password: z
+      .string()
+      .min(6, { message: "Password should have at least 6 letters" }),
   });
+
+  const handleError = (errors) => {};
 
   const form = useForm({
     validate: zodResolver(schema),
     initialValues: {
-      name: "",
-      sername: "",
+      login: "",
+      full_name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values) => {
-    dispatch(fetchLogin(values));
+  const handleSubmit = async (payload) => {
+    try {
+      const resultAction = await dispatch(fetchLogin(payload)).unwrap();
+      if (!resultAction) throw new Error();
+      flashSuccess({ title: "Login", message: "Success Login" });
+      closePopover();
+    } catch (message) {
+      flashError({ title: "Login", message });
+    }
   };
 
   return (
-    <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-      <Paper withBorder shadow="md" p={30} radius="md">
-        <Title mb={"sm"} align="center">
-          Login
-        </Title>
+    <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+      <LoadingOverlay visible={profile.status === "loading"} overlayBlur={1} />
+      <Paper withBorder shadow="md" p="18px 24px 20px 24px" radius="md">
+        {type === "register" && (
+          <>
+            <TextInput
+              withAsterisk
+              required
+              label="Login"
+              placeholder="Kuro_137"
+              {...form.getInputProps("login")}
+            />
+            <TextInput
+              withAsterisk
+              required
+              label="Name"
+              placeholder="Elon Musk"
+              {...form.getInputProps("full_name")}
+            />
+          </>
+        )}
         <TextInput
           withAsterisk
           required
-          label="name"
-          placeholder="name"
-          {...form.getInputProps("name")}
-        />
-        <TextInput
-          withAsterisk
-          required
-          label="sername"
-          placeholder="sername"
-          {...form.getInputProps("sername")}
-        />
-        <TextInput
-          withAsterisk
-          required
-          label="email"
-          placeholder="email"
+          label="Email"
+          placeholder="steffan_cat@kitty.meow"
           {...form.getInputProps("email")}
         />
         <PasswordInput
           withAsterisk
           required
-          label="password"
-          placeholder="password"
+          label="Password"
+          placeholder="Your Password"
           {...form.getInputProps("password")}
         />
+        {type === "login" && (
+          <Group position="apart" mt="md">
+            <Checkbox label="Remember me" />
+            <Anchor
+              onClick={(event) => event.preventDefault()}
+              href="#"
+              size="sm"
+            >
+              Forgot password?
+            </Anchor>
+          </Group>
+        )}
+
         <Group position="apart" mt="md">
-          <Checkbox label="Remember me" />
           <Anchor
-            onClick={(event) => event.preventDefault()}
-            href="#"
-            size="sm"
+            component="button"
+            type="button"
+            color="dimmed"
+            onClick={() => toggle()}
+            size="xs"
           >
-            Forgot password?
+            {type === "register"
+              ? "Already have an account? Login"
+              : "Don't have an account? Register"}
           </Anchor>
+          <Button type="submit" fullWidth mt="xs">
+            {type === "login" ? "Login" : "Create Account"}
+          </Button>
         </Group>
-        <Button disabled={() => form.isValid()} type="submit" fullWidth mt="xl">
-          Sign in
-        </Button>
       </Paper>
     </form>
   );

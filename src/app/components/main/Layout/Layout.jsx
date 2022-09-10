@@ -1,17 +1,33 @@
 import React from "react";
-import { Header } from "../Header/Header";
-import { NavbarMinimal } from "../NavBar/NavBar";
+import { HeaderMain } from "../Header/Header";
+import { NavbarMinimal } from "../NavBar/NavBarMain";
 import { Outlet } from "react-router-dom";
-import "./index.scss";
+import { AppShell, createStyles } from "@mantine/core";
 
 export function Layout() {
+  const useStyles = createStyles((theme) => ({
+    appShell: {
+      padding: "0 40px",
+      maxWidth: 2000,
+      margin: "0 auto",
+      backgroundColor: theme.colors.blue[0],
+      height: "100vh",
+    },
+    body: {
+      height: "calc(100vh - 88px)",
+    },
+  }));
+  const { classes } = useStyles();
+
   return (
-    <div className="layout-wrapper">
-      <NavbarMinimal />
-      <div className="layout-wrapper__right layout-right">
-        <Header />
-        <div className="layout-right__content">{<Outlet />}</div>
-      </div>
-    </div>
+    <AppShell
+      classNames={{ root: classes.appShell, body: classes.body }}
+      padding={40}
+      fixed={false}
+      navbar={<NavbarMinimal />}
+      header={<HeaderMain />}
+    >
+      <Outlet />
+    </AppShell>
   );
 }
