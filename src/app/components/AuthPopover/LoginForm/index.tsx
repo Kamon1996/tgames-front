@@ -10,21 +10,20 @@ import {
   Button,
   LoadingOverlay,
 } from "@mantine/core";
-import { fetchLogin } from "../../../store/reducers/profile/profileReducer";
+import { fetchLogin } from "../../../../store/reducers/profile/profileReducer";
 import { useForm, zodResolver } from "@mantine/form";
-import { useToggle } from "@mantine/hooks";
-import { flashError, flashSuccess } from "../Common/Notification/flashs";
+import { flashError, flashSuccess } from "../../Common/Notification/flashs";
 import { useAppDispatch, useAppSelector } from "store";
 
 interface IProps {
   closePopover: () => void;
+  toggleForm: () => void;
 }
 
-export function LoginForm({ closePopover }: IProps) {
+export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
   const profile = useAppSelector((store) => store.profile);
 
   const dispatch = useAppDispatch();
-  const [type, toggle] = useToggle(["login", "register"]);
 
   const schema = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -38,8 +37,6 @@ export function LoginForm({ closePopover }: IProps) {
   const form = useForm({
     validate: zodResolver(schema),
     initialValues: {
-      login: "",
-      full_name: "",
       email: "",
       password: "",
     },
@@ -47,8 +44,7 @@ export function LoginForm({ closePopover }: IProps) {
 
   const handleSubmit = async (payload: LoginData) => {
     try {
-      const resultAction = await dispatch(fetchLogin(payload)).unwrap();
-      if (!resultAction) throw new Error();
+      await dispatch(fetchLogin(payload)).unwrap();
       flashSuccess({ title: "Login", message: "Success Login" });
       closePopover();
     } catch (message) {
@@ -60,24 +56,6 @@ export function LoginForm({ closePopover }: IProps) {
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
       <LoadingOverlay visible={profile.status === "loading"} overlayBlur={1} />
       <Paper withBorder shadow="md" p="18px 24px 20px 24px" radius="md">
-        {type === "register" && (
-          <>
-            <TextInput
-              withAsterisk
-              required
-              label="Login"
-              placeholder="Kuro_137"
-              {...form.getInputProps("login")}
-            />
-            <TextInput
-              withAsterisk
-              required
-              label="Name"
-              placeholder="Elon Musk"
-              {...form.getInputProps("full_name")}
-            />
-          </>
-        )}
         <TextInput
           withAsterisk
           required
@@ -92,38 +70,33 @@ export function LoginForm({ closePopover }: IProps) {
           placeholder="Your Password"
           {...form.getInputProps("password")}
         />
-        {type === "login" && (
-          <Group position="apart" mt="md">
-            <Checkbox label="Remember me" />
-            <Anchor
-              onClick={(event: React.MouseEvent<HTMLElement>) =>
-                event.preventDefault()
-              }
-              href="#"
-              size="sm"
-            >
-              Forgot password?
-            </Anchor>
-          </Group>
-        )}
-
+        <Group position="apart" mt="md">
+          <Checkbox label="Remember me" />
+          <Anchor
+            onClick={(event: React.MouseEvent<HTMLElement>) =>
+              event.preventDefault()
+            }
+            href="#"
+            size="sm"
+          >
+            Forgot password?
+          </Anchor>
+        </Group>
         <Group position="apart" mt="md">
           <Anchor
             component="button"
             type="button"
             color="dimmed"
-            onClick={() => toggle()}
+            onClick={toggleForm}
             size="xs"
           >
-            {type === "register"
-              ? "Already have an account? Login"
-              : "Don't have an account? Register"}
+            {"Don't have an account? Register"}
           </Anchor>
           <Button type="submit" fullWidth mt="xs">
-            {type === "login" ? "Login" : "Create Account"}
+            {"Login"}
           </Button>
         </Group>
       </Paper>
     </form>
   );
-}
+};

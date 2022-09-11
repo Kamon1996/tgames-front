@@ -8,6 +8,13 @@ declare global {
     password: string;
   };
 
+  type RegisterData = {
+    username: string;
+    name: string;
+    email: string;
+    password: string;
+  };
+
   type Profile = {
     id: number | null;
     created_at: string;
@@ -18,7 +25,7 @@ declare global {
   };
 }
 type ProfileState = {
-  profile: Profile;
+  info: Profile;
   isLogged: boolean;
   status: null | "loading" | "resolved" | "rejected";
   errors: string | null | undefined;
@@ -34,7 +41,7 @@ const profileInit: Profile = {
 };
 
 const initProfileState: ProfileState = {
-  profile: profileInit,
+  info: profileInit,
   isLogged: false,
   status: null,
   errors: null,
@@ -67,10 +74,28 @@ export const fetchLogin = createAsyncThunk<
   }
 });
 
-const userSlice = createSlice({
+export const fetchRegister = createAsyncThunk<
+  Profile,
+  RegisterData,
+  { rejectValue: string }
+>("users/fetchRegister", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await tGamesApi.post(`/users`, payload);
+    return response.data as Profile;
+  } catch (err) {
+    return rejectWithValue(getErrorMessage(err));
+  }
+});
+
+const profileSlice = createSlice({
   name: "profile",
   initialState: initProfileState,
-  reducers: {},
+  reducers: {
+    logOut(state) {
+      localStorage.removeItem("token");
+      state.isLogged = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
@@ -81,7 +106,7 @@ const userSlice = createSlice({
         state.status = "resolved";
         state.errors = null;
         state.isLogged = true;
-        state.profile = action.payload;
+        state.info = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = "rejected";
@@ -96,7 +121,7 @@ const userSlice = createSlice({
         state.status = "resolved";
         state.errors = null;
         state.isLogged = true;
-        state.profile = action.payload;
+        state.info = action.payload;
       })
       .addCase(fetchLogin.rejected, (state, action) => {
         state.status = "rejected";
@@ -105,4 +130,6 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export const { logOut } = profileSlice.actions;
+
+export default profileSlice.reducer;

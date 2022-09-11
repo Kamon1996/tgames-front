@@ -1,12 +1,15 @@
+import React, { useState } from "react";
 import { Button, Grid, createStyles, Popover, Center } from "@mantine/core";
-import { useClickOutside } from "@mantine/hooks";
-import React, { useEffect, useState } from "react";
+import { useClickOutside, useToggle } from "@mantine/hooks";
 import { useAppSelector } from "store";
-import { LoginForm } from "../../LoginWindow/form";
+import { LoginForm } from "app/components/AuthPopover/LoginForm";
+import { RegisterForm } from "app/components/AuthPopover/RegisterForm";
+import { ProfileManu } from "app/components/AvatarMenu";
 
-export function HeaderMain() {
+export const HeaderMain: React.FC = () => {
   const profile = useAppSelector((store) => store.profile);
   const [popoverOpened, setPopoverOpened] = useState(false);
+  const [type, toggle] = useToggle<"login" | "register">(["login", "register"]);
   const ref = useClickOutside(() => setPopoverOpened(false));
 
   const useStyles = createStyles((theme) => ({
@@ -37,7 +40,10 @@ export function HeaderMain() {
         Logo
       </Grid.Col>
       {profile.isLogged ? (
-        "Account Icon"
+        <ProfileManu
+          img={"https://i.ytimg.com/vi/tdBdkxwQY-Q/maxresdefault.jpg"}
+          username={profile.info.username}
+        />
       ) : (
         <Grid.Col span={6} xs={4} lg={3}>
           <Center ref={ref}>
@@ -59,7 +65,17 @@ export function HeaderMain() {
                 </Button>
               </Popover.Target>
               <Popover.Dropdown className={classes.dropDown}>
-                <LoginForm closePopover={() => setPopoverOpened(false)} />
+                {type === "login" ? (
+                  <LoginForm
+                    toggleForm={() => toggle()}
+                    closePopover={() => setPopoverOpened(false)}
+                  />
+                ) : (
+                  <RegisterForm
+                    toggleForm={() => toggle()}
+                    closePopover={() => setPopoverOpened(false)}
+                  />
+                )}
               </Popover.Dropdown>
             </Popover>
           </Center>
@@ -67,4 +83,4 @@ export function HeaderMain() {
       )}
     </Grid>
   );
-}
+};

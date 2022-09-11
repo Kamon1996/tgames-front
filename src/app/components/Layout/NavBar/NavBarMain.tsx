@@ -1,32 +1,27 @@
-import React, { useState } from "react";
-import {
-  Navbar,
-  Center,
-  Tooltip,
-  UnstyledButton,
-  createStyles,
-  Stack,
-  AppShell,
-} from "@mantine/core";
-import { Link, useLocation, NavLink } from "react-router-dom";
-import { Icons } from "../../../../assets/icons.tsx";
+import React from "react";
+import { Navbar, createStyles, Stack } from "@mantine/core";
+import { useLocation, NavLink } from "react-router-dom";
 import "./styles.scss";
-import { Header } from "../Header/Header";
+import { Icons } from "assets/icons";
 
 const startPath = (path) => {
   return "/" + path.split("/")[1];
 };
 
 const mockdata = [
-  { icon: <Icons.Home />, label: "Dashboard", to: "/" },
-  { icon: <Icons.Messanger />, label: "Messenger", to: "/messenger" },
-  { icon: <Icons.Controller />, label: "Games", to: "/games" },
-  { icon: <Icons.Settings />, label: "Settings", to: "/settings" },
-  { icon: <Icons.Profile />, label: "Account", to: "/account" },
-  { icon: <Icons.Moon />, label: "Theme", to: "/theme" },
+  { icon: <Icons.Home classes={""} />, label: "Dashboard", to: "/" },
+  {
+    icon: <Icons.Messanger classes={""} />,
+    label: "Messenger",
+    to: "/messenger",
+  },
+  { icon: <Icons.Controller classes={""} />, label: "Games", to: "/games" },
+  { icon: <Icons.Settings classes={""} />, label: "Settings", to: "/settings" },
+  { icon: <Icons.Profile classes={""} />, label: "Account", to: "/account" },
+  { icon: <Icons.Moon classes={""} />, label: "Theme", to: "/theme" },
 ];
 
-export function NavbarMinimal() {
+export const NavbarMinimal: React.FC = () => {
   const { pathname } = useLocation();
   const isActive = (to) => startPath(pathname) === to;
 
@@ -58,4 +53,4 @@ export function NavbarMinimal() {
       </Stack>
     </Navbar>
   );
-}
+};

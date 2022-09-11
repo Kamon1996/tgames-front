@@ -1,10 +1,10 @@
 import React from "react";
-import { HeaderMain } from "../Header/Header";
-import { NavbarMinimal } from "../NavBar/NavBarMain";
+import { HeaderMain } from "./Header/Header";
+import { NavbarMinimal } from "./NavBar/NavBarMain";
 import { Outlet } from "react-router-dom";
 import { AppShell, createStyles } from "@mantine/core";
 
-export function Layout() {
+export const Layout: React.FC = () => {
   const useStyles = createStyles((theme) => ({
     appShell: {
       padding: "0 40px",
@@ -30,4 +30,4 @@ export function Layout() {
       <Outlet />
     </AppShell>
   );
-}
+};
