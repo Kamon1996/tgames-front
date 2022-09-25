@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { MantineProvider, LoadingOverlay } from "@mantine/core";
 import { Routes, Route } from "react-router-dom";
 import Messenger from "./Pages/Messenger/Messenger";
-import { fetchProfile } from "../store/reducers/profile/profileReducer";
 import { NotificationsProvider } from "@mantine/notifications";
 import { myTheme } from "../assets/styles/MantineTheme";
-import { useAppDispatch } from "store";
 import { Layout } from "./components/Layout/Layout";
+import { useGetProfileQuery } from "store/tgamesapi";
 
 function App() {
-  const dispatch = useAppDispatch();
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await dispatch(fetchProfile());
-      setLoading(false);
-    };
-    fetchData();
-  }, [dispatch]);
+  const { isLoading } = useGetProfileQuery();
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={myTheme}>

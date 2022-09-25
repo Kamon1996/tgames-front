@@ -10,12 +10,11 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useAppDispatch, useAppSelector } from "store";
 import {
   flashError,
   flashSuccess,
 } from "app/components/Common/Notification/flashs";
-import { fetchRegister } from "store/reducers/profile/profileReducer";
+import { useCreateAccountMutation } from "store/tgamesapi";
 
 interface IProps {
   closePopover: () => void;
@@ -26,9 +25,7 @@ export const RegisterForm: React.FC<IProps> = ({
   closePopover,
   toggleForm,
 }) => {
-  const profile = useAppSelector((store) => store.profile);
-
-  const dispatch = useAppDispatch();
+  const [createAccount, { isLoading }] = useCreateAccountMutation();
 
   const schema = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -55,7 +52,7 @@ export const RegisterForm: React.FC<IProps> = ({
 
   const handleSubmit = async (payload: RegisterData) => {
     try {
-      await dispatch(fetchRegister(payload)).unwrap();
+      await createAccount(payload);
       flashSuccess({ title: "Register", message: "Success Register" });
       closePopover();
     } catch (message) {
@@ -65,7 +62,7 @@ export const RegisterForm: React.FC<IProps> = ({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
-      <LoadingOverlay visible={profile.status === "loading"} overlayBlur={1} />
+      <LoadingOverlay visible={isLoading} overlayBlur={1} />
       <Paper withBorder shadow="md" p="18px 24px 20px 24px" radius="md">
         <TextInput
           withAsterisk

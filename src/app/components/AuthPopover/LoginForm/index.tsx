@@ -10,10 +10,14 @@ import {
   Button,
   LoadingOverlay,
 } from "@mantine/core";
-import { fetchLogin } from "../../../../store/reducers/profile/profileReducer";
 import { useForm, zodResolver } from "@mantine/form";
 import { flashError, flashSuccess } from "../../Common/Notification/flashs";
-import { useAppDispatch, useAppSelector } from "store";
+import { useSignInMutation } from "store/tgamesapi";
+import { getErrorMessage } from "helpers/catchErrorHelper";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import type { SerializedError } from "@reduxjs/toolkit";
+import { signIn } from "store/reducers/profile/profileReducer";
+import { useAppDispatch } from "store";
 
 interface IProps {
   closePopover: () => void;
@@ -21,8 +25,7 @@ interface IProps {
 }
 
 export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
-  const profile = useAppSelector((store) => store.profile);
-
+  const [fetchSignIn, { isLoading }] = useSignInMutation();
   const dispatch = useAppDispatch();
 
   const schema = z.object({
@@ -43,18 +46,19 @@ export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
   });
 
   const handleSubmit = async (payload: LoginData) => {
-    try {
-      await dispatch(fetchLogin(payload)).unwrap();
-      flashSuccess({ title: "Login", message: "Success Login" });
-      closePopover();
-    } catch (message) {
-      flashError({ title: "Login", message });
-    }
+    await fetchSignIn(payload)
+      .unwrap()
+      .then((response) => {
+        const { token, exp, profile } = response;
+        localStorage.setItem("token", token);
+        dispatch(signIn({ token, exp, profile }));
+        closePopover();
+      });
   };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
-      <LoadingOverlay visible={profile.status === "loading"} overlayBlur={1} />
+      <LoadingOverlay visible={isLoading} overlayBlur={1} />
       <Paper withBorder shadow="md" p="18px 24px 20px 24px" radius="md">
         <TextInput
           withAsterisk

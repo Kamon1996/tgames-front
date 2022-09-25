@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import profileReducer from "./reducers/profile/profileReducer";
-import userReducer from "./reducers/users/userReducer";
+import { tgamesApi } from "./tgamesapi";
 
 export const store = configureStore({
   reducer: {
-    users: userReducer,
+    [tgamesApi.reducerPath]: tgamesApi.reducer,
     profile: profileReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(tgamesApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

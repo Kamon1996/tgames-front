@@ -4,8 +4,4 @@ export const tGamesApi = axios.create({
   timeout: 10000,
 });
 
-const token = localStorage.getItem("token");
-
-if (token !== null) {
-  tGamesApi.defaults.headers.common["Authorization"] = token;
-}
+export const TOKEN = localStorage.getItem("token");

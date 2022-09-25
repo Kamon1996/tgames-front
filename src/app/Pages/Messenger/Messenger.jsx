@@ -4,16 +4,16 @@ import ContentEditable from "react-contenteditable";
 import { IconSend } from "@tabler/icons";
 
 import "./index.scss";
-import { useSelector } from "react-redux";
 import { CableApp } from "../../../constants/Cabels/Cables";
+import { tgamesApi } from "store/tgamesapi";
 
 export default function Messenger() {
   const [inputState, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const { profile } = useSelector((state) => state.users);
+  const { data: profile } = tgamesApi.useGetProfileQuery();
 
   useEffect(() => {
-    if (profile.id) {
+    if (profile?.id) {
       fetch(`/api/users/${profile.id}/message_history`, {
         method: "POST",
         headers: {
@@ -31,14 +31,14 @@ export default function Messenger() {
         }
       });
     }
-  }, [profile.id, setMessages]);
+  }, [profile?.id, setMessages]);
 
   useEffect(() => {
-    if (profile.id) {
+    if (profile?.id) {
       CableApp.cable.subscriptions.create(
         {
           channel: "ChatsChannel",
-          user_id: profile.id,
+          user_id: profile?.id,
           recipient_id: 2,
         },
         {
@@ -48,7 +48,7 @@ export default function Messenger() {
         }
       );
     }
-  }, [profile.id, CableApp.cable.subscriptions, setMessages, messages]);
+  }, [profile?.id, CableApp.cable.subscriptions, setMessages, messages]);
 
   return (
     <div className="messenger">
