@@ -1,12 +1,6 @@
-/**
- * Type predicate to narrow an unknown error to `FetchBaseQueryError`
- */
-
 type FetchBaseQueryError = {
   status: number;
-  originalStatus: number;
-  data: string;
-  error: string;
+  data: string | string[];
 };
 
 export function isFetchBaseQueryError(
@@ -16,13 +10,11 @@ export function isFetchBaseQueryError(
     typeof error === "object" &&
     error != null &&
     "status" in error &&
-    typeof (error as any).data === "string"
+    (typeof (error as any).data === "string" ||
+      typeof (error as any).data === "object")
   );
 }
 
-/**
- * Type predicate to narrow an unknown error to an object with a string 'message' property
- */
 export function isErrorWithMessage(
   error: unknown
 ): error is { message: string } {

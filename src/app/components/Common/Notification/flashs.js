@@ -6,15 +6,17 @@ const flashSuccess = ({ title, message }) => {
     title,
     message,
     color: "green",
+    sx: { whiteSpace: "pre-wrap" },
   });
 };
 
 const flashError = ({ title, message }) => {
   return showNotification({
-    autoClose: 3000,
+    autoClose: 50000,
     title,
     message,
     color: "red",
+    sx: { whiteSpace: "pre-wrap" },
   });
 };
 

@@ -70,7 +70,6 @@ export const tgamesApi = createApi({
       async onQueryStarted(body, { dispatch, queryFulfilled, getCacheEntry }) {
         try {
           await queryFulfilled;
-          const token = getCacheEntry().data?.token;
           flashSuccess({ title: "Sign In", message: "Success Sign In" });
         } catch {
           const { error } = getCacheEntry();
@@ -88,6 +87,28 @@ export const tgamesApi = createApi({
         method: "POST",
         body,
       }),
+      async onQueryStarted(body, { dispatch, queryFulfilled, getCacheEntry }) {
+        try {
+          await queryFulfilled;
+          flashSuccess({
+            title: "Create Account",
+            message: "Account Successfully Created",
+          });
+        } catch {
+          const { error } = getCacheEntry();
+          if (isFetchBaseQueryError(error)) {
+            flashError({
+              title: "Create Account",
+              message:
+                typeof error.data === "string"
+                  ? error.data
+                  : error.data.join("\n"),
+            });
+          } else if (isErrorWithMessage(error)) {
+            flashError({ title: "Create Account", message: error.message });
+          }
+        }
+      },
     }),
   }),
 });

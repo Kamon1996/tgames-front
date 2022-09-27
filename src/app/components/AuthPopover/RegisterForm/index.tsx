@@ -51,13 +51,9 @@ export const RegisterForm: React.FC<IProps> = ({
   });
 
   const handleSubmit = async (payload: RegisterData) => {
-    try {
-      await createAccount(payload);
-      flashSuccess({ title: "Register", message: "Success Register" });
-      closePopover();
-    } catch (message) {
-      flashError({ title: "Register", message });
-    }
+    await createAccount(payload)
+      .unwrap()
+      .then(() => closePopover());
   };
 
   return (
@@ -76,7 +72,7 @@ export const RegisterForm: React.FC<IProps> = ({
           required
           label="Name"
           placeholder="Elon Musk"
-          {...form.getInputProps("full_name")}
+          {...form.getInputProps("name")}
         />
         <TextInput
           withAsterisk
