@@ -1,12 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  flashError,
-  flashSuccess,
-} from "app/components/Common/Notification/flashs";
-import {
-  isErrorWithMessage,
-  isFetchBaseQueryError,
-} from "helpers/rtkQueryErrorTypePredicate";
+import { flashSuccess } from "app/components/Common/Notification/flashs";
 import { RootState } from "store";
 
 declare global {
@@ -71,14 +64,7 @@ export const tgamesApi = createApi({
         try {
           await queryFulfilled;
           flashSuccess({ title: "Sign In", message: "Success Sign In" });
-        } catch {
-          const { error } = getCacheEntry();
-          if (isFetchBaseQueryError(error)) {
-            flashError({ title: "Login", message: error.data });
-          } else if (isErrorWithMessage(error)) {
-            flashError({ title: "Login", message: error.message });
-          }
-        }
+        } catch {}
       },
     }),
     createAccount: builder.mutation<void, RegisterData>({
@@ -94,20 +80,7 @@ export const tgamesApi = createApi({
             title: "Create Account",
             message: "Account Successfully Created",
           });
-        } catch {
-          const { error } = getCacheEntry();
-          if (isFetchBaseQueryError(error)) {
-            flashError({
-              title: "Create Account",
-              message:
-                typeof error.data === "string"
-                  ? error.data
-                  : error.data.join("\n"),
-            });
-          } else if (isErrorWithMessage(error)) {
-            flashError({ title: "Create Account", message: error.message });
-          }
-        }
+        } catch {}
       },
     }),
   }),

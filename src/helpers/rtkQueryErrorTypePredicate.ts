@@ -1,6 +1,11 @@
 type FetchBaseQueryError = {
   status: number;
-  data: string | string[];
+  data: any;
+};
+
+type dataWithTitleAndMessage = {
+  title: string;
+  message: string | string[];
 };
 
 export function isFetchBaseQueryError(
@@ -10,18 +15,22 @@ export function isFetchBaseQueryError(
     typeof error === "object" &&
     error != null &&
     "status" in error &&
-    (typeof (error as any).data === "string" ||
-      typeof (error as any).data === "object")
+    typeof (error as any).data === "object" &&
+    (error as any).data != null
   );
 }
 
-export function isErrorWithMessage(
-  error: unknown
-): error is { message: string } {
+export function isDataWithTitleAndMessage(
+  data: any
+): data is dataWithTitleAndMessage {
   return (
-    typeof error === "object" &&
-    error != null &&
-    "message" in error &&
-    typeof (error as any).message === "string"
+    typeof data === "object" &&
+    data != null &&
+    "title" in data &&
+    typeof (data as any).title === "string" &&
+    "message" in data &&
+    (typeof (data as any).message === "string" ||
+      (Array.isArray((data as any).message) &&
+        (data as any).message.every((msg: any) => typeof msg === "string")))
   );
 }
