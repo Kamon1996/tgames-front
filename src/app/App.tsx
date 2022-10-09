@@ -4,14 +4,14 @@ import Messenger from "./Pages/Messenger/Messenger";
 import { NotificationsProvider } from "@mantine/notifications";
 import { myTheme } from "../assets/styles/MantineTheme";
 import { Layout } from "./components/Layout/Layout";
-import { useGetProfileQuery } from "store/tgamesapi";
+import { useGetProfileQuery } from "store/tgamesapi/profile";
 
 function App() {
   const { isLoading } = useGetProfileQuery();
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={myTheme}>
-      <NotificationsProvider position="top-center" zIndex={2077}>
+      <NotificationsProvider limit={5} position="top-center" zIndex={9999}>
         <div className="App">
           <LoadingOverlay
             transitionDuration={300}

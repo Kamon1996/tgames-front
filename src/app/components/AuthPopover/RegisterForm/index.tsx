@@ -10,11 +10,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import {
-  flashError,
-  flashSuccess,
-} from "app/components/Common/Notification/flashs";
-import { useCreateAccountMutation } from "store/tgamesapi";
+import { useCreateAccountMutation } from "store/tgamesapi/profile";
 
 interface IProps {
   closePopover: () => void;
@@ -53,7 +49,7 @@ export const RegisterForm: React.FC<IProps> = ({
   const handleSubmit = async (payload: RegisterData) => {
     await createAccount(payload)
       .unwrap()
-      .then(() => closePopover());
+      .then(() => toggleForm());
   };
 
   return (

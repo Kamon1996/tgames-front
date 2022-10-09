@@ -11,7 +11,6 @@ import {
 
 export const rtkQueryErrorLogger =
   (api: MiddlewareAPI) => (next) => (action: AnyAction) => {
-    console.log(api.getState());
     if (isRejectedWithValue(action)) {
       const { payload } = action;
       if (isFetchBaseQueryError(payload)) {
@@ -20,6 +19,11 @@ export const rtkQueryErrorLogger =
           flashError({
             title: "Unexpected error",
             message: "Please, contact our support team dmitriu355@gmail.com",
+          });
+        } else if (status === 401) {
+          flashError({
+            title: "Unauthorized",
+            message: "Full authentication is required to access this resource",
           });
         } else if (isDataWithTitleAndMessage(data)) {
           const { title, message } = data;

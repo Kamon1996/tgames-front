@@ -2,6 +2,7 @@ import { showNotification } from "@mantine/notifications";
 
 const flashSuccess = ({ title, message }) => {
   return showNotification({
+    id: title,
     autoClose: 3000,
     title,
     message,
@@ -11,8 +12,12 @@ const flashSuccess = ({ title, message }) => {
 };
 
 const flashError = ({ title, message }) => {
+  console.log("====================================");
+  console.log({ title, message });
+  console.log("====================================");
   return showNotification({
-    autoClose: 50000,
+    id: title,
+    autoClose: 3000,
     title,
     message,
     color: "red",

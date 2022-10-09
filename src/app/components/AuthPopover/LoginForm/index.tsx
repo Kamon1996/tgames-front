@@ -11,14 +11,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { flashError, flashSuccess } from "../../Common/Notification/flashs";
-import { useSignInMutation } from "store/tgamesapi";
-import { getErrorMessage } from "helpers/catchErrorHelper";
-import type { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
-import type { SerializedError } from "@reduxjs/toolkit";
-import { signIn } from "store/reducers/profile/profileReducer";
-import { useAppDispatch } from "store";
-
+import { useSignInMutation } from "store/tgamesapi/profile";
 interface IProps {
   closePopover: () => void;
   toggleForm: () => void;
@@ -26,7 +19,6 @@ interface IProps {
 
 export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
   const [fetchSignIn, { isLoading }] = useSignInMutation();
-  const dispatch = useAppDispatch();
 
   const schema = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -46,14 +38,10 @@ export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
   });
 
   const handleSubmit = async (payload: LoginData) => {
-    await fetchSignIn(payload)
-      .unwrap()
-      .then((response) => {
-        const { token, exp, profile } = response;
-        localStorage.setItem("token", token);
-        dispatch(signIn({ token, exp, profile }));
-        closePopover();
-      });
+    try {
+      await fetchSignIn(payload).unwrap();
+      closePopover();
+    } catch {}
   };
 
   return (

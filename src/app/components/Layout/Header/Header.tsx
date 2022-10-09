@@ -4,10 +4,13 @@ import { useClickOutside, useToggle } from "@mantine/hooks";
 import { LoginForm } from "app/components/AuthPopover/LoginForm";
 import { RegisterForm } from "app/components/AuthPopover/RegisterForm";
 import { ProfileManu } from "app/components/AvatarMenu";
-import { tgamesApi } from "store/tgamesapi";
+import { useGetProfileQuery } from "store/tgamesapi/profile";
+import { useAppSelector } from "store";
 
 export const HeaderMain: React.FC = () => {
-  const { data: profile } = tgamesApi.useGetProfileQuery();
+  const { data } = useGetProfileQuery();
+  const isLogged = useAppSelector((store) => store.profile.isLogged);
+
   const [popoverOpened, setPopoverOpened] = useState(false);
   const [type, toggle] = useToggle<"login" | "register">(["login", "register"]);
   const ref = useClickOutside(() => setPopoverOpened(false));
@@ -39,10 +42,10 @@ export const HeaderMain: React.FC = () => {
       <Grid.Col span={6} xs={4} lg={3}>
         Logo
       </Grid.Col>
-      {profile?.id ? (
+      {isLogged && data?.id ? (
         <ProfileManu
           img={"https://i.ytimg.com/vi/tdBdkxwQY-Q/maxresdefault.jpg"}
-          username={profile.username}
+          username={data.username}
         />
       ) : (
         <Grid.Col span={6} xs={4} lg={3}>
