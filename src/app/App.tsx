@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from "react";
 import { MantineProvider, LoadingOverlay } from "@mantine/core";
 import { Routes, Route } from "react-router-dom";
 import Messenger from "./Pages/Messenger/Messenger";
-import { fetchProfile } from "../store/reducers/profile/profileReducer";
 import { NotificationsProvider } from "@mantine/notifications";
 import { myTheme } from "../assets/styles/MantineTheme";
-import { useAppDispatch } from "store";
 import { Layout } from "./components/Layout/Layout";
+import { useGetProfileQuery } from "store/tgamesapi/profile";
 
 function App() {
-  const dispatch = useAppDispatch();
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await dispatch(fetchProfile());
-      setLoading(false);
-    };
-    fetchData();
-  }, [dispatch]);
+  const { isLoading } = useGetProfileQuery();
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={myTheme}>
-      <NotificationsProvider position="top-center" zIndex={2077}>
+      <NotificationsProvider limit={5} position="top-center" zIndex={9999}>
         <div className="App">
           <LoadingOverlay
             transitionDuration={300}

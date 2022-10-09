@@ -7,8 +7,7 @@ import {
   Title,
 } from "@mantine/core";
 import { Icons } from "assets/icons";
-import { useAppDispatch } from "store";
-import { logOut } from "store/reducers/profile/profileReducer";
+import { useLogOutMutation } from "store/tgamesapi/profile";
 
 interface IProps {
   img: string | null;
@@ -16,11 +15,11 @@ interface IProps {
 }
 
 export const ProfileManu: React.FC<IProps> = ({ img, username }) => {
-  const dispatch = useAppDispatch();
+  const [fetchLoginOut] = useLogOutMutation();
 
-  const handleLogOut = () => {
-    dispatch(logOut());
-  };
+  const handleLoginOut = () => {
+    fetchLoginOut()
+  }
 
   return (
     <Group position="center">
@@ -52,7 +51,7 @@ export const ProfileManu: React.FC<IProps> = ({ img, username }) => {
             Change Account
           </Menu.Item>
           <Menu.Item
-            onClick={handleLogOut}
+            onClick={handleLoginOut}
             color="red"
             icon={<Icons.Moon classes={""} />}
           >

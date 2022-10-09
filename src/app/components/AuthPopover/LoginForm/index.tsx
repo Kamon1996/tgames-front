@@ -10,20 +10,15 @@ import {
   Button,
   LoadingOverlay,
 } from "@mantine/core";
-import { fetchLogin } from "../../../../store/reducers/profile/profileReducer";
 import { useForm, zodResolver } from "@mantine/form";
-import { flashError, flashSuccess } from "../../Common/Notification/flashs";
-import { useAppDispatch, useAppSelector } from "store";
-
+import { useSignInMutation } from "store/tgamesapi/profile";
 interface IProps {
   closePopover: () => void;
   toggleForm: () => void;
 }
 
 export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
-  const profile = useAppSelector((store) => store.profile);
-
-  const dispatch = useAppDispatch();
+  const [fetchSignIn, { isLoading }] = useSignInMutation();
 
   const schema = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -44,17 +39,14 @@ export const LoginForm: React.FC<IProps> = ({ closePopover, toggleForm }) => {
 
   const handleSubmit = async (payload: LoginData) => {
     try {
-      await dispatch(fetchLogin(payload)).unwrap();
-      flashSuccess({ title: "Login", message: "Success Login" });
+      await fetchSignIn(payload).unwrap();
       closePopover();
-    } catch (message) {
-      flashError({ title: "Login", message });
-    }
+    } catch {}
   };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
-      <LoadingOverlay visible={profile.status === "loading"} overlayBlur={1} />
+      <LoadingOverlay visible={isLoading} overlayBlur={1} />
       <Paper withBorder shadow="md" p="18px 24px 20px 24px" radius="md">
         <TextInput
           withAsterisk
