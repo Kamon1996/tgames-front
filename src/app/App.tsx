@@ -22,15 +22,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<div>Home</div>} />
-              <Route path="messenger" element={<Messenger />} />
+              <Route path="conversations/" element={<Messenger />}/>
+              <Route path="conversations/:id/" element={<Messenger />}/>
               <Route path="games" element={<div>Games</div>} />
               <Route path="account" element={<div>Account</div>} />
               <Route path="settings" element={<div>Settings</div>} />
               <Route path="theme" element={<div>Theme</div>} />
-            </Route>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<div>Account</div>} />
-              <Route path="/register" element={<div>Account</div>} />
             </Route>
           </Routes>
         </div>

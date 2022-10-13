@@ -13,7 +13,7 @@ const mockdata = [
   {
     icon: <Icons.Messanger classes={""} />,
     label: "Messenger",
-    to: "/messenger",
+    to: "/conversations",
   },
   { icon: <Icons.Controller classes={""} />, label: "Games", to: "/games" },
   { icon: <Icons.Settings classes={""} />, label: "Settings", to: "/settings" },

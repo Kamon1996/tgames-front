@@ -1,0 +1,90 @@
+import { Avatar, LoadingOverlay } from "@mantine/core";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
+import {
+  useActionCable,
+  useChannel,
+} from "helpers/hooks/ActionCable/ActionCable";
+import { useScrollIntoView } from "helpers/hooks/useScrollBottom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useGetProfileQuery } from "store/tgamesapi/profile";
+import { useGetOneRoomQuery } from "store/tgamesapi/rooms";
+
+export default function MessagesWindow() {
+  const { actionCable } = useActionCable("ws://localhost:3000/cable");
+  const { subscribe, unsubscribe } = useChannel(actionCable);
+  const [messages, setMessages] = useState<Message[] | []>([]);
+
+  const { id } = useParams();
+  
+  const { data: profile } = useGetProfileQuery();
+  const { data: room, isFetching } = useGetOneRoomQuery(id ?? skipToken, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const { targetRef, scrollableRef, resetScrolledBottom } = useScrollIntoView({
+    isFetching,
+    array: messages,
+  });
+
+  useEffect(() => {
+    !isFetching && room && setMessages(room?.messages);
+  }, [isFetching, room]);
+
+  useEffect(() => {
+    id &&
+      subscribe(
+        {
+          channel: `MessagesChannel`,
+          id,
+        },
+        {
+          received: (message: Message) => {
+            setMessages((prev) => [...prev, message]);
+          },
+        }
+      );
+    return () => {
+      unsubscribe();
+      resetScrolledBottom();
+    };
+  }, [id]);
+
+  return (
+    <div ref={scrollableRef} className="messenger__messages">
+      {isFetching ? (
+        <LoadingOverlay
+          transitionDuration={300}
+          overlayOpacity={0}
+          visible={isFetching}
+          overlayColor="#e3f5ff"
+        />
+      ) : (
+        messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`user-message ${
+              msg.sender_id === profile?.id ? "user-message--recipient" : ""
+            }`}
+          >
+            <Avatar
+              size={44}
+              src={
+                "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector.png"
+              }
+              radius={40}
+            />
+            <div className="user-message__data">
+              <div className="user-message__head">
+                <div className="user-message__full-name">{msg.sender_name}</div>
+                <div className="user-message__time">{msg.created_at}</div>
+              </div>
+              <div className="user-message__value">{msg.body}</div>
+            </div>
+          </div>
+        ))
+      )}
+      <div ref={targetRef} />
+    </div>
+  );
+}
