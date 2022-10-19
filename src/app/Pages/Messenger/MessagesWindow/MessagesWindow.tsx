@@ -4,7 +4,7 @@ import {
   useActionCable,
   useChannel,
 } from "helpers/hooks/ActionCable/ActionCable";
-import { useScrollIntoView } from "helpers/hooks/useScrollBottom";
+import { useScrollBottom } from "helpers/hooks/useScrollBottom";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProfileQuery } from "store/tgamesapi/profile";
@@ -16,15 +16,15 @@ export default function MessagesWindow() {
   const [messages, setMessages] = useState<Message[] | []>([]);
 
   const { id } = useParams();
-  
+
   const { data: profile } = useGetProfileQuery();
   const { data: room, isFetching } = useGetOneRoomQuery(id ?? skipToken, {
     refetchOnMountOrArgChange: true,
   });
-
-  const { targetRef, scrollableRef, resetScrolledBottom } = useScrollIntoView({
+  const { targetRef, scrollableRef, resetScrolledBottom } = useScrollBottom({
     isFetching,
-    array: messages,
+    content: messages,
+    setContent: setMessages,
   });
 
   useEffect(() => {
@@ -40,6 +40,8 @@ export default function MessagesWindow() {
         },
         {
           received: (message: Message) => {
+            console.log(message);
+            
             setMessages((prev) => [...prev, message]);
           },
         }

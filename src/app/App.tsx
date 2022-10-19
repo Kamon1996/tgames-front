@@ -5,6 +5,7 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { myTheme } from "../assets/styles/MantineTheme";
 import { Layout } from "./components/Layout/Layout";
 import { useGetProfileQuery } from "store/tgamesapi/profile";
+import { Friends } from "./Pages/Friends/Friends";
 
 function App() {
   const { isLoading } = useGetProfileQuery();
@@ -28,6 +29,7 @@ function App() {
               <Route path="account" element={<div>Account</div>} />
               <Route path="settings" element={<div>Settings</div>} />
               <Route path="theme" element={<div>Theme</div>} />
+              <Route path="people/:tabValue" element={<Friends/>} />
             </Route>
           </Routes>
         </div>

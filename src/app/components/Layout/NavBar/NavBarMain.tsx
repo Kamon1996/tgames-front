@@ -19,6 +19,7 @@ const mockdata = [
   { icon: <Icons.Settings classes={""} />, label: "Settings", to: "/settings" },
   { icon: <Icons.Profile classes={""} />, label: "Account", to: "/account" },
   { icon: <Icons.Moon classes={""} />, label: "Theme", to: "/theme" },
+  { icon: <Icons.Moon classes={""} />, label: "People", to: "/people/friends" },
 ];
 
 export const NavbarMinimal: React.FC = () => {

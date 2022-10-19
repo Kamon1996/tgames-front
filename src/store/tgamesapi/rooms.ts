@@ -49,6 +49,7 @@ const roomsApi = tgamesApi.injectEndpoints({
         url: `/rooms`,
       }),
     }),
+    
     getOneRoom: builder.query<GroupRoom | PrivateRoom, number | string>({
       query: (id) => ({
         url: `/rooms/${id}`,

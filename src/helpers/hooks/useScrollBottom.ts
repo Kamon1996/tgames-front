@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   isFetching: boolean;
-  array: [] | any[];
+  content?: [] | any[];
+  setContent?: (content: any[]) => void;
   maxHeightScrollBottom?: number;
 };
 
-export const useScrollIntoView = ({
+export const useScrollBottom = ({
   isFetching,
-  array,
+  content,
+  setContent,
   maxHeightScrollBottom = 700,
 }: Props) => {
   const scrollableRef = useRef<null | HTMLDivElement>(null);
@@ -16,7 +18,10 @@ export const useScrollIntoView = ({
 
   const [scrolledToBottom, setScrolledToBottom] = useState<boolean>(false);
 
-  const resetScrolledBottom = () => setScrolledToBottom(false);
+  const resetScrolledBottom = () => {
+    setScrolledToBottom(false);
+    setContent && setContent([]);
+  };
 
   const scrollToBottom = () => {
     targetRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,22 +29,23 @@ export const useScrollIntoView = ({
 
   useEffect(() => {
     if (!scrollableRef.current) return;
-    if (!array.length) return;
-
+    if (!content?.length) return;
+    if (isFetching) return;
     const height = scrollableRef.current?.getBoundingClientRect().height;
     const maxScrollHeight = scrollableRef.current?.scrollHeight;
     const clientHeight = scrollableRef.current.clientHeight;
     const scrollTop = scrollableRef.current?.scrollTop;
-
-    if (!isFetching && !scrolledToBottom) {
+    if (!scrolledToBottom) {
       scrollableRef.current.scrollTop = maxScrollHeight - clientHeight;
       setScrolledToBottom(true);
     } else if (maxScrollHeight - scrollTop - height < maxHeightScrollBottom) {
       scrollToBottom();
     }
-  }, [isFetching, array, maxHeightScrollBottom]);
+  }, [isFetching, content, maxHeightScrollBottom]);
 
   return {
+    content,
+    setContent,
     scrollToBottom,
     targetRef,
     scrollableRef,
