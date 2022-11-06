@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseUrl } from "constants/evn";
 
 export const tgamesApi = createApi({
   reducerPath: "tgamesApi",
   tagTypes: ["Profile", "People"],
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/"
-        : "https://stagingwtgapi.onrender.com/",
+    baseUrl: baseUrl[process.env.NODE_ENV],
     credentials: "include",
   }),
   endpoints: () => ({}),
