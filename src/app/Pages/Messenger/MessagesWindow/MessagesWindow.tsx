@@ -5,6 +5,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import { baseUrl } from "constants/evn";
 import {
   useActionCable,
   useChannel,
@@ -34,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function MessagesWindow() {
-  const { actionCable } = useActionCable("ws://localhost:3000/cable");
+  const { actionCable } = useActionCable(baseUrl[process.env.NODE_ENV]);
   const { subscribe, unsubscribe } = useChannel(actionCable);
   const [messages, setMessages] = useState<Message[] | []>([]);
 
