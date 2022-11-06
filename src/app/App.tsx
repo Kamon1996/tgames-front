@@ -10,6 +10,9 @@ import { Friends } from "./Pages/Friends/Friends";
 function App() {
   const { isLoading } = useGetProfileQuery();
 
+  console.log(process.env.NODE_ENV);
+  
+
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={myTheme}>
       <NotificationsProvider limit={5} position="top-center" zIndex={9999}>
