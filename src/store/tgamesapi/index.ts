@@ -4,7 +4,10 @@ export const tgamesApi = createApi({
   reducerPath: "tgamesApi",
   tagTypes: ["Profile", "People"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/",
+    baseUrl:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/"
+        : "https://stagingwtgapi.onrender.com/",
     credentials: "include",
   }),
   endpoints: () => ({}),
