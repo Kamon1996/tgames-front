@@ -17,9 +17,6 @@ export const RightNavigation = ({ tabs, currentTab }: Props) => {
 
   const onTabChange = (tabValue: string) => {
     if (Object.keys(tabs).some((rightLabel) => tabs[rightLabel])) {
-        console.log('====================================');
-        console.log(tabs[tabValue][0]?.value);
-        console.log('====================================');
       setSearchParams({ section: tabs[tabValue][0]?.value || tabValue });
     }
   };
@@ -34,7 +31,9 @@ export const RightNavigation = ({ tabs, currentTab }: Props) => {
     >
       <Tabs.List>
         {Object.keys(tabs).map((tabLabel) => (
-          <Tabs.Tab key={tabLabel} value={tabLabel}>{tabLabel}</Tabs.Tab>
+          <Tabs.Tab key={tabLabel} value={tabLabel}>
+            {tabLabel}
+          </Tabs.Tab>
         ))}
       </Tabs.List>
     </Tabs>
