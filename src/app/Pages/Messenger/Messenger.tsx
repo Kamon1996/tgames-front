@@ -19,6 +19,8 @@ export default function Messenger() {
   const [sendMessage] = useSendMessageMutation();
   const { id } = useParams();
 
+  console.log(process.env);
+
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -34,7 +36,6 @@ export default function Messenger() {
     });
     setInput("");
   };
-  
 
   return (
     <div className="messenger">
