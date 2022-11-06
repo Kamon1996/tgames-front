@@ -1,14 +1,37 @@
-import { Avatar, LoadingOverlay } from "@mantine/core";
+import {
+  Avatar,
+  createStyles,
+  LoadingOverlay,
+  ScrollArea,
+} from "@mantine/core";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import {
   useActionCable,
   useChannel,
 } from "helpers/hooks/ActionCable/ActionCable";
 import { useScrollBottom } from "helpers/hooks/useScrollBottom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProfileQuery } from "store/tgamesapi/profile";
 import { useGetOneRoomQuery } from "store/tgamesapi/rooms";
+
+const useStyles = createStyles((theme) => ({
+  scrollArea: {
+    position: "relative",
+    flex: 1,
+    borderRadius: 6,
+    background:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[7]
+        : theme.colors.blue[1],
+    ".mantine-ScrollArea-thumb": {
+      backgroundColor: theme.colors.dark[1],
+    },
+    ".mantine-ScrollArea-scrollbar": {
+      background: "transparent",
+    },
+  },
+}));
 
 export default function MessagesWindow() {
   const { actionCable } = useActionCable("ws://localhost:3000/cable");
@@ -41,7 +64,7 @@ export default function MessagesWindow() {
         {
           received: (message: Message) => {
             console.log(message);
-            
+
             setMessages((prev) => [...prev, message]);
           },
         }
@@ -52,8 +75,15 @@ export default function MessagesWindow() {
     };
   }, [id]);
 
+  const { classes } = useStyles();
+
   return (
-    <div ref={scrollableRef} className="messenger__messages">
+    <ScrollArea
+      scrollbarSize={6}
+      type="hover"
+      ref={scrollableRef}
+      className={classes.scrollArea}
+    >
       {isFetching ? (
         <LoadingOverlay
           transitionDuration={300}
@@ -87,6 +117,6 @@ export default function MessagesWindow() {
         ))
       )}
       <div ref={targetRef} />
-    </div>
+    </ScrollArea>
   );
 }

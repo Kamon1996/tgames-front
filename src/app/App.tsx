@@ -29,7 +29,7 @@ function App() {
               <Route path="account" element={<div>Account</div>} />
               <Route path="settings" element={<div>Settings</div>} />
               <Route path="theme" element={<div>Theme</div>} />
-              <Route path="people/:tabValue" element={<Friends/>} />
+              <Route path="friends" element={<Friends/>} />
             </Route>
           </Routes>
         </div>

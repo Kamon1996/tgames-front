@@ -2,13 +2,6 @@ import { flashSuccess } from "app/components/Common/Notification/flashs";
 import { tgamesApi } from ".";
 
 declare global {
-  interface IPeople {
-    all: IUser[] | [];
-    friends: IUser[] | [];
-    following: IUser[] | [];
-    followers: IUser[] | [];
-  }
-
   interface IUser {
     created_at: string;
     email: string;
@@ -16,13 +9,25 @@ declare global {
     name: string;
     username: string;
   }
+
+  type IUserInvites = IUserInvite[];
+  interface IUserInvite {
+    invite_id: number;
+    user_id: number;
+    email: string;
+    name: string;
+    username: string;
+    created_at: string;
+    status: string;
+  }
 }
 
 const peopleApi = tgamesApi.injectEndpoints({
   endpoints: (builder) => ({
-    getInvites: builder.query<IPeople, void>({
-      query: () => ({
+    getInvites: builder.query<IUserInvites, string>({
+      query: (section) => ({
         url: `/invites`,
+        params: { section },
       }),
       providesTags: ["People"],
     }),

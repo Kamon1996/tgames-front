@@ -1,5 +1,6 @@
 import { Button, Card, createStyles, Image, Modal, Text } from "@mantine/core";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useFollowMutation, useUnfollowMutation } from "store/tgamesapi/people";
 import { MessageNewModal } from "./MessageNewModal/MessageNewModal";
 
@@ -8,7 +9,7 @@ interface IProps extends IUser {
   invite_id: number;
 }
 
-export function UserCard({
+export const UserCard = ({
   username,
   name,
   created_at,
@@ -16,10 +17,10 @@ export function UserCard({
   user_id,
   invite_id,
   status,
-}: IProps) {
+}: IProps) => {
   const useStyles = createStyles((theme) => ({
     card: {
-      maxWidth: 210,
+      maxWidth: 220,
       minWidth: 190,
     },
     button: {
@@ -37,13 +38,13 @@ export function UserCard({
   };
 
   const statusActions = {
-    friends: { title: "Remove Friend", action: () => unfollow(invite_id) },
+    friend: { title: "Remove Friend", action: () => unfollow(invite_id) },
     following: { title: "Unfollow", action: () => unfollow(invite_id) },
-    followers: {
+    follower: {
       title: "Accept Friend",
       action: () => followUser(user_id),
     },
-    other: {
+    new: {
       title: "Add Friend",
       action: () => followUser(user_id),
     },
@@ -52,7 +53,7 @@ export function UserCard({
   const { classes } = useStyles();
 
   return (
-    <Card component="a" href="#" radius="md" p="lg" className={classes.card}>
+    <Card component={Link} to={`#`} radius="md" p="lg" className={classes.card}>
       <Card.Section>
         <Image
           src="https://mult34.com/wp-content/uploads/2020/05/Avatar-porn-pics-045.jpg"
@@ -99,4 +100,4 @@ export function UserCard({
       </Card.Section>
     </Card>
   );
-}
+};

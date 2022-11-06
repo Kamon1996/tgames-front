@@ -51,7 +51,7 @@
     background-color: #333;
     border-radius: 6px;
     flex: 1;
-    overflow: auto;
+    overflow-y: scroll;
   }
   &__input-wrapper {
     width: 100%;

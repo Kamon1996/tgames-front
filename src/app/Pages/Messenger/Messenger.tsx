@@ -12,7 +12,6 @@ import { useParams } from "react-router-dom";
 import MessagesWindow from "./MessagesWindow/MessagesWindow";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useSendMessageMutation } from "store/tgamesapi/messages";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 export default function Messenger() {
   const [inputState, setInput] = useState("");
