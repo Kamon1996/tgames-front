@@ -13,12 +13,13 @@ const mockdata = [
   {
     icon: <Icons.Messanger classes={""} />,
     label: "Messenger",
-    to: "/messenger",
+    to: "/conversations",
   },
   { icon: <Icons.Controller classes={""} />, label: "Games", to: "/games" },
   { icon: <Icons.Settings classes={""} />, label: "Settings", to: "/settings" },
   { icon: <Icons.Profile classes={""} />, label: "Account", to: "/account" },
   { icon: <Icons.Moon classes={""} />, label: "Theme", to: "/theme" },
+  { icon: <Icons.Moon classes={""} />, label: "Friends", to: "/friends" },
 ];
 
 export const NavbarMinimal: React.FC = () => {

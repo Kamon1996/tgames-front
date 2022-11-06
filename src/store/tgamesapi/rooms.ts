@@ -2,12 +2,34 @@ import { flashSuccess } from "app/components/Common/Notification/flashs";
 import { tgamesApi } from ".";
 
 declare global {
-  type Room = {
+  type GroupRoom = {
     id: number;
     owner_id: number;
     name: string;
     created_at: string;
     updated_at: string;
+    last_message: Message;
+    messages: Message[] | [];
+  };
+
+  type PrivateRoom = {
+    id: number;
+    created_at: string;
+    updated_at: string;
+    last_message: Message;
+    participant: {
+      created_at: string;
+      email: string;
+      id: number;
+      name: string;
+      username: string;
+    };
+    messages: Message[] | [];
+  };
+
+  type Rooms = {
+    group_rooms: [] | GroupRoom[];
+    private_rooms: [] | PrivateRoom[];
   };
 
   type RoomCreateParams = {
@@ -22,12 +44,13 @@ declare global {
 
 const roomsApi = tgamesApi.injectEndpoints({
   endpoints: (builder) => ({
-    getRooms: builder.query<Room[] | [], void>({
+    getRooms: builder.query<Rooms, void>({
       query: () => ({
         url: `/rooms`,
       }),
     }),
-    getOneRoom: builder.query<Room, number>({
+    
+    getOneRoom: builder.query<GroupRoom | PrivateRoom, number | string>({
       query: (id) => ({
         url: `/rooms/${id}`,
       }),
