@@ -35,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function MessagesWindow() {
-  const { actionCable } = useActionCable(baseUrl[process.env.NODE_ENV]);
+  const { actionCable } = useActionCable(`${baseUrl[process.env.NODE_ENV]}/cable`);
   const { subscribe, unsubscribe } = useChannel(actionCable);
   const [messages, setMessages] = useState<Message[] | []>([]);
 
