@@ -1,4 +1,4 @@
-import { createStyles, Group, ScrollArea, Stack } from "@mantine/core";
+import { Box, createStyles, Group, ScrollArea, Stack } from "@mantine/core";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { Loader } from "app/components/Common/Loader/Loader";
 import { UserCard } from "app/components/UserCards/UserCard";
@@ -7,6 +7,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useGetInvitesQuery } from "store/tgamesapi/people";
 import { RightNavigation } from "./RightNavigation/RightNavigation";
 import { TabsSearchParamsNav } from "./TabsSearchParamsNav/TabsSearchParamsNav";
+import "./styles.scss";
 
 type Tabs = {
   [key: string]: { label: string; value: string }[] | [];
@@ -25,16 +26,12 @@ const tabs: Tabs = {
 };
 
 const useStyles = createStyles((theme) => ({
-  contentContainer: {
-    alignItems: "flex-start",
-  },
-  rightNavBar: {
-    flex: 0,
+  headerNav: {
+    marginBottom: 10,
   },
 }));
 
 export const Friends = () => {
-  const { classes } = useStyles();
   const [searchParams, _] = useSearchParams();
   const [currentSection, setSection] = useState({
     head: "all",
@@ -61,10 +58,13 @@ export const Friends = () => {
     });
   }, [searchParams]);
 
+  const { classes } = useStyles();
+
   return (
-    <Stack>
+    <>
       {tabs[currentSection.right].length ? (
         <TabsSearchParamsNav
+          className={classes.headerNav}
           searchParamKey="section"
           defaultValue={tabs[currentSection.right][0].value}
           tabList={tabs[currentSection.right]}
@@ -72,11 +72,12 @@ export const Friends = () => {
       ) : (
         <div className="search_people"></div>
       )}
-      <Group noWrap className={classes.contentContainer}>
-        <ScrollArea type="hover" scrollbarSize={6}>
-          {data?.map((u) => (
-            <div key={u.username}>
+      <Group h={"100%"} noWrap align="start">
+        <ScrollArea w={"100%"} h={"100%"} type="hover" scrollbarSize={6}>
+          <Group>
+            {data?.map((u) => (
               <UserCard
+                key={u.user_id}
                 user_id={u.user_id}
                 invite_id={u.invite_id}
                 created_at={u.created_at}
@@ -85,11 +86,11 @@ export const Friends = () => {
                 email={u.email}
                 status={u.status}
               />
-            </div>
-          ))}
+            ))}
+          </Group>
         </ScrollArea>
         <RightNavigation tabs={tabs} currentTab={currentSection.right} />
       </Group>
-    </Stack>
+    </>
   );
 };

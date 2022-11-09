@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFollowMutation, useUnfollowMutation } from "store/tgamesapi/people";
 import { MessageNewModal } from "./MessageNewModal/MessageNewModal";
+import defaultAvatar from "assets/images/def_img.webp";
 
 interface IProps extends IUser {
   status: string;
@@ -20,8 +21,7 @@ export const UserCard = ({
 }: IProps) => {
   const useStyles = createStyles((theme) => ({
     card: {
-      maxWidth: 220,
-      minWidth: 190,
+      minWidth: 220,
     },
     button: {
       backgroundImage: "linear-gradient(45deg, #748ffc 0%, #3bc9db 100%)",
@@ -55,10 +55,7 @@ export const UserCard = ({
   return (
     <Card component={Link} to={`#`} radius="md" p="lg" className={classes.card}>
       <Card.Section>
-        <Image
-          src="https://mult34.com/wp-content/uploads/2020/05/Avatar-porn-pics-045.jpg"
-          height={120}
-        />
+        <Image src={defaultAvatar} height={120} />
       </Card.Section>
       <Card.Section>
         <Text align="center" size="lg" weight={700}>
@@ -80,9 +77,7 @@ export const UserCard = ({
           opened={opened}
           onClose={() => setOpened(false)}
           user_id={user_id}
-          avatar={
-            "https://mult34.com/wp-content/uploads/2020/05/Avatar-porn-pics-045.jpg"
-          }
+          avatar={defaultAvatar}
           username={username}
         />
       </Card.Section>

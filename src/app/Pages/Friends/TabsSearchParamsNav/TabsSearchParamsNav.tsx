@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface IProps {
+  className: string;
   searchParamKey: string;
   defaultValue: string;
   tabList: { label: string; value: string }[] | [];
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 export const TabsSearchParamsNav = ({
+  className,
   searchParamKey,
   defaultValue,
   tabList,
@@ -38,6 +40,7 @@ export const TabsSearchParamsNav = ({
       value={tabValue}
       defaultValue={defaultValue}
       onTabChange={onTabChange}
+      className={className}
     >
       <Tabs.List>
         {tabList.length > 0

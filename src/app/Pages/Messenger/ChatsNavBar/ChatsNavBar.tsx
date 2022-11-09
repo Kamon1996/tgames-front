@@ -88,18 +88,25 @@ export const ChatsNavBar = ({ rooms }: Props) => {
             <Code sx={{ fontWeight: 700 }}>v3.1.2</Code>
           </Group>
         </Navbar.Section>
-        <NavLink
-          label="Private Chats"
-          icon={""}
-          childrenOffset={0}
-          defaultOpened
-        >
-          {private_rooms}
-        </NavLink>
+        <ScrollArea>
+          <NavLink
+            label="Private Chats"
+            icon={""}
+            childrenOffset={0}
+            defaultOpened
+          >
+            {private_rooms}
+          </NavLink>
 
-        <NavLink label="Group Chats" icon={""} childrenOffset={0} defaultOpened>
-          {group_rooms}
-        </NavLink>
+          <NavLink
+            label="Group Chats"
+            icon={""}
+            childrenOffset={0}
+            defaultOpened
+          >
+            {group_rooms}
+          </NavLink>
+        </ScrollArea>
       </Navbar>
     </Box>
   );
