@@ -8,7 +8,6 @@ import { useGetProfileQuery } from "store/tgamesapi/profile";
 import { Friends } from "./Pages/Friends/Friends";
 import { PrivateRoutes } from "./components/Common/PrivateRoutes/PrivateRoutes";
 import { useAppSelector } from "store";
-import * as test from "test";
 
 function App(props) {
   const { data, isLoading, isFetching } = useGetProfileQuery();
