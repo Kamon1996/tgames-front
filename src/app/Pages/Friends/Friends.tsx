@@ -7,7 +7,6 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useGetInvitesQuery } from "store/tgamesapi/people";
 import { RightNavigation } from "./RightNavigation/RightNavigation";
 import { TabsSearchParamsNav } from "./TabsSearchParamsNav/TabsSearchParamsNav";
-import "./styles.scss";
 
 type Tabs = {
   [key: string]: { label: string; value: string }[] | [];

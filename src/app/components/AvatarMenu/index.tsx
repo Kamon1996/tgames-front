@@ -7,19 +7,15 @@ import {
   Title,
 } from "@mantine/core";
 import { Icons } from "assets/icons";
-import { useLogOutMutation } from "store/tgamesapi/profile";
+import { useGetProfileQuery, useLogOutMutation } from "store/tgamesapi/profile";
 
-interface IProps {
-  img: string | null;
-  username: string;
-}
-
-export const ProfileManu: React.FC<IProps> = ({ img, username }) => {
+export const ProfileMenu: React.FC = () => {
+  const { data: profile } = useGetProfileQuery();
   const [fetchLoginOut] = useLogOutMutation();
 
   const handleLoginOut = () => {
-    fetchLoginOut()
-  }
+    fetchLoginOut();
+  };
 
   return (
     <Group position="center">
@@ -27,9 +23,13 @@ export const ProfileManu: React.FC<IProps> = ({ img, username }) => {
         <Menu.Target>
           <UnstyledButton>
             <Group>
-              <Avatar size={44} src={img} radius={20} />
+              <Avatar
+                size={44}
+                src={"https://i.ytimg.com/vi/tdBdkxwQY-Q/maxresdefault.jpg"}
+                radius={20}
+              />
               <Title size={18} order={5}>
-                {username}
+                {profile?.username}
               </Title>
             </Group>
           </UnstyledButton>
