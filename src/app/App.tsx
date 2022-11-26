@@ -7,6 +7,7 @@ import { useGetProfileQuery } from "store/tgamesapi/profile";
 import { publickRoutes, privateRoutes } from "./routes/router";
 import { NoMatch } from "./Pages/NoMatch/NoMatch";
 
+
 export default function App() {
   const { data, isLoading } = useGetProfileQuery();
 
