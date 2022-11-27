@@ -29,7 +29,7 @@ export const UserCard = ({
   }));
 
   const [followUser] = useFollowMutation();
-  const [unfollow, {}] = useUnfollowMutation();
+  const [unfollow] = useUnfollowMutation();
   const [opened, setOpened] = useState(false);
 
   const openModal = (e) => {
