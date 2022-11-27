@@ -11,20 +11,6 @@ import {
 import { Icons } from "assets/icons";
 import { Carousel } from "@mantine/carousel";
 import React, { useMemo } from "react";
-import { number } from "zod";
-
-const sliderImages = [
-  "https://s5-goods.ozstatic.by/2000/479/831/10/10831479_0.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_10.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_11.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_12.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_13.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_14.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_15.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_16.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_17.jpg",
-  "https://s5-frame.ozstatic.by/1000/479/831/10/10831479_18.jpg",
-];
 
 const difficultSmilesConfig = {
   easy: <Icons.HappySmile />,
