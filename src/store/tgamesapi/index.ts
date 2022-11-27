@@ -3,7 +3,7 @@ import { baseUrl } from "constants/evn";
 
 export const tgamesApi = createApi({
   reducerPath: "tgamesApi",
-  tagTypes: ["Profile", "People"],
+  tagTypes: ["Profile", "People", "Games"],
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl[process.env.NODE_ENV],
     credentials: "include",
